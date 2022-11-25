@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Online Ticket booking</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    </head>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            text-decoration: none;
+        }
+        .container{
+            text-align: center;
+            top: 20%;
+            left: 38%;
+            position: relative;
+            height: auto;
+            width: 400px;
+            border-radius: 20px;
+            background-color: skyblue;
+        }
+        .container h1{
+            paddding: 30px;
+            font-family: 'Oswald', sans-serif;
+        }
+        .form-control{
+            margin-top: 8px;
+            padding: 10px;
+            width: 250px;
+            border-radius: 50px;
+        }
+        .form-control1{
+            width: 270px;
+            padding: 10px;
+            border-radius: 50px;
+        }
+        .btn{
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <h1>Train Booking System</h1>
+            <form action="/home" method="post" enctype="multipart/form-data">
+                <input type="text" class="form-control" name="username" placeholder="Traveller name"><br><br>
+                <input type="tel" class="form-control" name="phoneno" pattern="[0-9]{10}"><br><br>
+                <input type="email" class="form-control" name="email" placeholder="abc@gmial.com"><br><br>
+                <input type="text" placeholder="Departing" onfocus="(this.type='date')" onblur="if(this.value==''){this.type='text'}" id="date" class="form-control" name="date" onchange="populateTrain('destination', 'trainname')"><br><br>
+                <select name="source" id="source" class="form-control1" onchange="populateDestination(this.id,'destination')" required>
+                    <option value=""> -- </option>
+                    <option value="chennai">Chennai</option>
+                    <option value="hyderbad">Hyderbad</option>
+                    <option value="kolkata">Kolkata</option>
+                    <option value="pondicherry">Pondicherry</option>
+                </select><br><br>
+                <select name="destination" id="destination" class="form-control1" onchange="populateTrain(this.id, 'trainname')" required>
+                </select><br><br>
+                <select name="trainname" id="trainname" class="form-control1">
+                </select><br><br>
+                <input type="number" name="seat" id="seat" class="form-control" max="15" placeholder="No of seats"><br><br>
+                <select name="classType" id="classType" class="form-control1" placeholder="Select the class">
+                    <option value="">--</option>
+                    <option value="1AC">Air-Conditioned First Class</option>
+                    <option value="2AC">Air-Conditioned Two-Tier Class</option>
+                    <option value="FC">First Class (Non AC)</option>
+                    <option value="SL">Sleeper Class</option>
+                    <option value="2S"> Second Class</option>
+                    <option value="GS">Unreserved/General Class (2S)</option>
+                </select><br><br>
+                <input type="submit" class=btn>
+
+            </form>
+        </div>
+        <script>
+            function populateDestination(source, destination)
+            {
+                var s1 = document.getElementById(source);
+                var s2 = document.getElementById(destination);
+                s2.innerHTML ="";
+                if(s1.value == "chennai")
+                {
+                    var destinationLocation = ['hyderbad|Hyderbad', 'kolkata|Kolkata', 'pondicherry|Pondicherry']
+                }
+                else if(s1.value == "kolkata")
+                {
+                    var destinationLocation = ['chennai|Chennai', 'hyderbad|Hyderbad', 'pondicherry|Pondicherry']
+                }
+                else if(s1.value == "hyderbad")
+                {
+                    var destinationLocation = ['chennai|Chennai', 'kolkata|Kolkata', 'pondicherry|Pondicherry']
+                }
+                else if(s1.value == "pondicherry")
+                {
+                    var destinationLocation = ['chennai|Chennai', 'kolkata|Kolkata', 'hyderbad|Hyderbad']
+                }
+                var createNewOptions = document.createElement("option");
+                createNewOptions.value = "";
+                createNewOptions.innerHTML = "--";
+                s2.options.add(createNewOptions);
+                for(var option in destinationLocation)
+                {
+                    var pair = destinationLocation[option].split("|");
+                    var createNewOptions = document.createElement("option");
+                    createNewOptions.value = pair[0];
+                    createNewOptions.innerHTML = pair[1];
+                    s2.options.add(createNewOptions);
+                }
+            }
+            function populateTrain(destination, trainname)
+            {
+                
+                var s1 = document.getElementById("source").value;
+                var s2 = document.getElementById(destination);
+                var date = document.getElementById("date").value;
+                date = String(date);
+                date = new Date(date);
+                date = date.getDay();
+                if(!(s1.trim() == '' && s2.value.trim() == '')) 
+                {
+                    console.log(s1, s2, date);
+                    
+                    var s3 = document.getElementById(trainname);
+                    
+                    console.log(s1);
+                    console.log(s2.value);
+                    
+                    let sunday = 0;
+                    let monday = 1;
+                    let tuesday = 2;
+                    let wednesday = 3;
+                    let thursday = 4;
+                    let friday = 5;
+                    let saturday = 6;
+                    console.log(date);
+                    var list = [];
+                    s3.innerHTML = "";
+                    switch (s1) {
+                        case "chennai":
+                            if(s2.value == "hyderbad"){
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("HYB FEST SPL");
+                                    list.push("MAS HYB EXPRESS");
+                                    list.push("CHARMINAR EXP");
+                                    list.push("CGL KCG EXPRESS");
+                                }
+                                if(date == friday)
+                                {
+                                    list.push("MAS SC EXPRESS");
+                                }
+                                if(date.value == wednesday)
+                                {
+                                    list.push("VM SC EXP");
+                                }
+                            }
+                            else if(s2.value == "kolkata")
+                            {
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("MAS SRC AC EXP");
+                                    list.push("COROMANDAL EXP");
+                                }
+                                if(date==wednesday)
+                                {
+                                    list.push("MAS SRC EXPRESS");
+                                }
+                            }
+                            else if(s2.value == "pondicherry")
+                            {
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("MS PDY EXPRESS");
+                                    list.push("MS QLN EXPRESS");
+                                }
+                                if(date == wednesday)
+                                {
+                                    list.push("BBS PDY SPL");
+                                }
+                            }
+                            
+                            break;
+                        case "hyderbad":
+                            if(s2.value == "chennai")
+                            {
+                                list.push("KCG CGL EXPRESS");
+                                list.push("CHENNAI SF EXP");
+                                list.push("CHARMINAR");
+                                list.push("KCG CGL EXPRESS");
+                            }
+                            else if(s2.value == "kolkata")
+                            {
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("FALAKNUMA EXP");
+                                    list.push("SC SHM WKLY EXP");
+                                }
+                                if(date==tuesday)
+                                {
+                                    list.push("SC SHM AC EXP");
+                                }
+                            }
+                            else if(s2.value == "pondicherry")
+                            {
+                                if(date==wednesday)
+                                {
+                                    list.push("SC RMM SPL");
+                                }
+                                if(date==monday)
+                                {
+                                    list.push("SC MDU SPL");
+                                }
+                                if(date==thursday)
+                                {
+                                    list.push("HYB MDU SPL");
+                                }
+                            }
+                            break;
+                        case "kolkata":
+                            if(s2.value=="chennai"){
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("COROMANDAL EXP");
+                                    list.push("CHENNAI MAIL");
+                                }
+                                if(date.value==thursday)
+                                {
+                                    list.push("HWH TPJ SF SPL");
+                                }
+                            }
+                            else if(s2.value=="pondicherry")
+                            {
+                                if(date==monday)
+                                {
+                                    list.push("SRC PDY SPL");
+                                }
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("HUH PDY SUF SPL");
+                                }
+                            }
+                            else if(s2.value=="hyderbad")
+                            {
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("FALAKNUMA EXP");
+                                }
+                                else if(date==wednesday)
+                                {
+                                    list.push("SHM SC SUF EXP");
+                                }
+                                else if(date==friday)
+                                {
+                                    list.push("GHY SC EXPRESS");
+                                }
+                            }
+                            break;
+                        case "pondicherry":
+                            if(s2.value=="chennai")
+                            {
+                                if(date == sunday || date == monday || date ==  tuesday || date == wednesday || date == thursday ||date == friday|| date == saturday)
+                                {
+                                    list.push("PDY MS EXPRESS");
+                                    list.push("PDY SRC EXPRESS");
+                                }
+                                if(date==wednesday)
+                                {
+                                    list.push("PDY BBS EXPRESS");
+                                }
+                            }
+                            else if(s2.value=="kolkata")
+                            {
+                                if(date==saturday)
+                                {
+                                    list.push("PDY SRC EXPRESS");
+                                }
+                                if(date==wednesday)
+                                {
+                                    list.push("PDY HOWRAH EXP");
+                                }
+                            }
+                            else if(s2.value=="hyderbad")
+                            {
+                                if(date==friday)
+                                {
+                                    list.push("MDC SC SPL");
+                                    list.push("RMM SC SPL");
+                                }
+                                else if(date==wednesday)
+                                {
+                                    list.push("MDC SC SPL");
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    if(list.length==0){
+                        window.alert("No train is avaliable for this "+document.getElementById("date").value);
+                    }
+                    for(var option in list)
+                    {
+                        var createNewOptions = document.createElement("option");
+                        createNewOptions.innerHTML = list[option];
+                        s3.options.add(createNewOptions);
+                    }
+                    console.log(list)
+                }
+            }
+        </script>
+    </body>
+</html>

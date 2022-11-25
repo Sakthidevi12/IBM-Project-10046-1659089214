@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Online Ticket booking</title>
+        <style>
+            .container{
+            text-align: center;
+            top: 20%;
+            left: 38%;
+            position: relative;
+            height: auto;
+            width: 400px;
+            border-radius: 20px;
+            }
+            img{
+                width:250px;
+                height:250px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h3>Scan the QRCode and get your train ticket.</h3>
+            <img src="{{url_for('static',filename = '/Image/'+filename)}}">
+            
+            <p>{{location}}</p>
+            
+            <form action="/location" method="POST"  enctype="multipart/form-data">
+                <input type="submit">
+            </form>
+        
+        </div>
+
+        <script>
+            function displayLocation()
+            {
+                document.getElementById("paragraph").innerHTML = "{{location}}";
+            }
+        </script>
+    </body>
+    </html>
+
+    
